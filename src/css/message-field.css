@@ -1,0 +1,10 @@
+.center {
+  margin: 0 auto;
+  position: relative;
+  margin-top: 100%;
+}
+
+.buttom {
+  position: absolute;
+  top: 0;
+}
