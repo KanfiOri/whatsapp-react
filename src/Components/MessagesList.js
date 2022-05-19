@@ -25,7 +25,7 @@ export default function MessagesList({ id }) {
           return <div>{message}</div>;
         })}
       {/* <input onKeyDown={handleKeyDown} /> */}
-      <MessageField handleKeyDown={handleKeyDown} />
+      {selectedContact && <MessageField handleKeyDown={handleKeyDown} />}
     </div>
   );
 }

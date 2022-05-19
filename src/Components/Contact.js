@@ -6,7 +6,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
-export default function Contact({ id, name }) {
+export default function Contact({ id, name, messages }) {
   const { handleContactSelect } = useContext(ContactContext);
   return (
     <>
@@ -24,9 +24,9 @@ export default function Contact({ id, name }) {
                 variant="body2"
                 color="text.primary"
               >
-                The last massage
+                {messages[messages.length - 1]}
               </Typography>
-              {" - The last massege will be showen here"}
+              {}
             </React.Fragment>
           }
         />

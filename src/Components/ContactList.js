@@ -1,6 +1,7 @@
 import React from "react";
 import Contact from "./Contact";
 import NameNavBar from "./NameNavBar";
+import SearchName from "./SearchName";
 
 export default function ContactList({ contacts }) {
   return (
@@ -11,7 +12,7 @@ export default function ContactList({ contacts }) {
         })}
       </div>
       <div>
-
+        <SearchName />
       </div>
     </div>
   );
