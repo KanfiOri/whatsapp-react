@@ -6,7 +6,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
-export default function Contact({ id, name, messages }) {
+export default function Contact({ id, username, messages }) {
   const { handleContactSelect } = useContext(ContactContext);
   return (
     <>
@@ -15,7 +15,7 @@ export default function Contact({ id, name, messages }) {
           <Avatar alt="Remy Sharp" />
         </ListItemAvatar>
         <ListItemText
-          primary={name}
+          primary={username}
           secondary={
             <React.Fragment>
               <Typography

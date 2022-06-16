@@ -7,35 +7,27 @@ import SignUp from "./SignUp";
 import "../css/app.css";
 import Warper from "./Warper";
 import { v4 as uuidv4 } from "uuid";
-import { getContacts } from "../api/contacts";
+import { getContacts, addContact } from "../api/contacts";
 
 export const ContactContext = React.createContext();
 const LOCAL_STORAGE_KEY = "whatsapp-react.KANFI";
 
 function App() {
-  const [contacts, setContacts] = useState(() => {
-    const contactJSON = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (contactJSON == null) {
-      return contactNames;
-    } else {
-      return JSON.parse(contactJSON);
-    }
-  });
+  const [contacts, setContacts] = useState([]);
+  const [filteredContacts, setFilteredContacts] = useState([]);
   const [selectedContact, setSelectedContact] = useState("");
   const [selectedContactId, setSelectedContactId] = useState();
   const [logedUser, setLogedUser] = useState("");
 
   useEffect(() => {
     const test = async () => {
-      console.log((await getContacts()).data);
+      const contacts = (await getContacts()).data;
+      setContacts(contacts);
+      setFilteredContacts(contacts);
     };
 
     test();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(contacts));
-  }, [contacts]);
 
   const contactContextValue = {
     handleContactSelect,
@@ -45,21 +37,21 @@ function App() {
   };
 
   function handleSearchName(letters) {
-    let newContacts = contactNames;
-    newContacts = newContacts.filter((contact) =>
-      contact.name.toLowerCase().includes(letters.toLowerCase())
+    setFilteredContacts(
+      contacts.filter((contact) =>
+        contact.username.toLowerCase().includes(letters.toLowerCase())
+      )
     );
-    setContacts(newContacts);
   }
 
   function handleSignIn(nameInput, passwordInput) {
-    console.log("the name is " + nameInput);
+    console.log("the username is " + nameInput);
     console.log("the password is " + passwordInput);
-    console.log(contacts);
+
     return (
-      contacts.findIndex(({ name, password }) => {
-        console.log(name, password);
-        return name === nameInput && password === passwordInput;
+      contacts.findIndex(({ username, password }) => {
+        console.log(username, password);
+        return username === nameInput && password === passwordInput;
       }) !== -1
     );
   }
@@ -68,6 +60,8 @@ function App() {
     const passwordFound = contacts.find(
       (contact) => contact.password === password
     );
+
+    console.log(passwordFound);
     console.log("the password is : " + passwordFound);
     if (passwordFound !== undefined) {
       return true;
@@ -87,15 +81,17 @@ function App() {
     setSelectedContactId(id);
   }
 
-  function handleContactAdd(userName, password) {
-    console.log("userName " + userName);
+  async function handleContactAdd(username, password) {
+    console.log("userName " + username);
     console.log("passWord " + password);
+
     const newContact = {
-      id: uuidv4(),
-      name: userName,
-      password: password,
+      username,
+      password,
       messages: [],
     };
+
+    await addContact(newContact);
 
     setContacts([...contacts, newContact]);
   }
@@ -124,7 +120,9 @@ function App() {
 
           <Route
             path="/chat"
-            element={<Warper contacts={contacts} id={selectedContactId} />}
+            element={
+              <Warper contacts={filteredContacts} id={selectedContactId} />
+            }
           />
         </Routes>
       </BrowserRouter>
@@ -133,54 +131,3 @@ function App() {
 }
 
 export default App;
-
-const contactNames = [
-  {
-    id: 1,
-    name: "Ariel Dodi",
-    password: "Ariel Dodi",
-    messages: [],
-  },
-  {
-    id: 2,
-    name: "Ori Kanfi",
-    password: "Ori Kanfi",
-    messages: [],
-  },
-  {
-    id: 3,
-    name: "Rom Shech",
-    password: "Rom Shech",
-    messages: [],
-  },
-  {
-    id: 4,
-    name: "Adam Knizhnik",
-    password: "Adam Kniznik",
-    messages: [],
-  },
-  {
-    id: 5,
-    name: "Nitay Yona",
-    password: "Nitay Yona",
-    messages: [],
-  },
-  {
-    id: 6,
-    name: "Adi Brettler",
-    password: "Adi Brettler",
-    messages: [],
-  },
-  {
-    id: 7,
-    name: "Ofri Wasser",
-    password: "ofri Wasser",
-    messages: [],
-  },
-  {
-    id: 8,
-    name: "N",
-    password: "N",
-    messages: [],
-  },
-];

@@ -15,7 +15,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function SignIn({ handleSignIn, handleSignInPassword }) {
-  const [name, setName] = useState();
+  const [username, setName] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
 
@@ -32,9 +32,10 @@ export default function SignIn({ handleSignIn, handleSignInPassword }) {
   }
 
   function canLogIn() {
-    if (handleSignIn(name, password)) {
+    console.log("hello");
+    if (handleSignIn(username, password)) {
       console.log("i am working ###############");
-      console.log(name);
+      console.log(username);
       console.log(password);
       navigate("/chat");
     }
@@ -67,7 +68,7 @@ export default function SignIn({ handleSignIn, handleSignInPassword }) {
               fullWidth
               id="email"
               label="Email Address"
-              name="email"
+              username="email"
               autoComplete="email"
               autoFocus
               onChange={defineName}
@@ -76,7 +77,7 @@ export default function SignIn({ handleSignIn, handleSignInPassword }) {
               margin="normal"
               required
               fullWidth
-              name="password"
+              username="password"
               label="Password"
               type="password"
               id="password"
