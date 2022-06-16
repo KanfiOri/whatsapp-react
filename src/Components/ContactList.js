@@ -11,9 +11,7 @@ export default function ContactList({ contacts }) {
           return <Contact key={contact.id} {...contact} />;
         })}
       </div>
-      <div>
-        <SearchName />
-      </div>
+      <div>{<SearchName />}</div>
     </div>
   );
 }
